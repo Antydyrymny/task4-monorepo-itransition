@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
-// import { notFound, errorHandler } from './middleware.js';
+import { notFound, errorHandler } from './middleware.js';
 // import mainRouter from './routes/mainRouter.js';
 // import './routes/auth/auth.js';
 
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 // app.use('/api', mainRouter);
 
-// app.use(notFound);
-// app.use(errorHandler);
+app.use(notFound);
+app.use(errorHandler);
 
 export default app;
