@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
 
 export type User = {
-    id: string;
     name: string;
     email: string;
-    registrationDate: string;
+    createdAt: string;
     lastLogin: string;
     status: 'online' | 'offline' | 'blocked';
 };
@@ -26,21 +25,20 @@ export type RegisterRequest = {
 };
 
 const userSchema = new mongoose.Schema<User>({
-    id: {
-        type: String,
-        required: true,
-    },
     name: {
         type: String,
         required: true,
     },
     email: {
         type: String,
+        unique: true,
         required: true,
     },
-    registrationDate: {
+    createdAt: {
         type: String,
+        immutable: true,
         required: true,
+        default: () => new Date().toISOString(),
     },
     lastLogin: {
         type: String,

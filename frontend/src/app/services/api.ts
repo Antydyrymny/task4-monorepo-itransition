@@ -2,10 +2,10 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 
 export type User = {
-    id: string;
+    _id: string;
     name: string;
     email: string;
-    registrationDate: string;
+    createdAt: string;
     lastLogin: string;
     status: 'online' | 'offline' | 'blocked';
 };
@@ -48,7 +48,6 @@ const apiSlice = createApi({
                 method: 'POST',
                 body: credentials,
             }),
-            // invalidatesTags: ['Users'],
         }),
         register: builder.mutation<UserResponse, RegisterRequest>({
             query: (userData) => ({
@@ -56,67 +55,75 @@ const apiSlice = createApi({
                 method: 'POST',
                 body: userData,
             }),
-            // invalidatesTags: ['Users'],
+        }),
+        logOut: builder.mutation<string, string>({
+            query: (userId) => ({
+                url: '/logout',
+                method: 'POST',
+                body: userId,
+            }),
         }),
         getUsers: builder.query<User[], void>({
             query: () => '/users',
             providesTags: ['Users'],
         }),
-        blockUsers: builder.mutation<User[], User[]>({
+        blockUsers: builder.mutation<User[], string[]>({
             query: (blockedUsers) => ({
                 url: '/blockUsers',
                 method: 'PATCH',
                 body: blockedUsers,
             }),
-            async onQueryStarted(_blockedUsers, { dispatch, queryFulfilled }) {
-                try {
-                    const { data: updatedUsers } = await queryFulfilled;
-                    dispatch(
-                        apiSlice.util.updateQueryData(
-                            'getUsers',
-                            undefined,
-                            (oldState) => {
-                                return oldState.map(
-                                    (user) =>
-                                        updatedUsers.find(
-                                            (updatedUser) => updatedUser.id === user.id
-                                        ) as User
-                                );
-                            }
-                        )
-                    );
-                } catch {
-                    /* empty */
-                }
-            },
+            invalidatesTags: ['Users'],
+            // async onQueryStarted(_blockedUsers, { dispatch, queryFulfilled }) {
+            //     try {
+            //         const { data: updatedUsers } = await queryFulfilled;
+            //         dispatch(
+            //             apiSlice.util.updateQueryData(
+            //                 'getUsers',
+            //                 undefined,
+            //                 (oldState) => {
+            //                     return oldState.map(
+            //                         (user) =>
+            //                             updatedUsers.find(
+            //                                 (updatedUser) => updatedUser.id === user.id
+            //                             ) as User
+            //                     );
+            //                 }
+            //             )
+            //         );
+            //     } catch {
+            //         /* empty */
+            //     }
+            // },
         }),
-        deleteUsers: builder.mutation<User[], User[]>({
+        deleteUsers: builder.mutation<string, string[]>({
             query: (blockedUsers) => ({
                 url: '/deleteUsers',
                 method: 'DELETE',
                 body: blockedUsers,
             }),
-            async onQueryStarted(deletedUsers, { dispatch, queryFulfilled }) {
-                try {
-                    await queryFulfilled;
-                    dispatch(
-                        apiSlice.util.updateQueryData(
-                            'getUsers',
-                            undefined,
-                            (oldState) => {
-                                return oldState.filter(
-                                    (user) =>
-                                        !deletedUsers
-                                            .map((deletedUser) => deletedUser.id)
-                                            .includes(user.id)
-                                );
-                            }
-                        )
-                    );
-                } catch {
-                    /* empty */
-                }
-            },
+            invalidatesTags: ['Users'],
+            // async onQueryStarted(deletedUsers, { dispatch, queryFulfilled }) {
+            //     try {
+            //         await queryFulfilled;
+            //         dispatch(
+            //             apiSlice.util.updateQueryData(
+            //                 'getUsers',
+            //                 undefined,
+            //                 (oldState) => {
+            //                     return oldState.filter(
+            //                         (user) =>
+            //                             !deletedUsers
+            //                                 .map((deletedUser) => deletedUser.id)
+            //                                 .includes(user.id)
+            //                     );
+            //                 }
+            //             )
+            //         );
+            //     } catch {
+            //         /* empty */
+            //     }
+            // },
         }),
     }),
 });
@@ -126,6 +133,7 @@ export default apiSlice;
 export const {
     useLoginMutation,
     useRegisterMutation,
+    useLogOutMutation,
     useGetUsersQuery,
     useBlockUsersMutation,
     useDeleteUsersMutation,

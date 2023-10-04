@@ -12,12 +12,7 @@ const initialState: AuthState = { user: null, token: null };
 const slice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {
-        removeCredentials: (state) => {
-            state.user = null;
-            state.token = null;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addMatcher(
@@ -30,13 +25,15 @@ const slice = createSlice({
                     state.token = action.payload.token;
                 }
             )
+            .addMatcher(apiSlice.endpoints.logOut.matchPending, (state) => {
+                state.user = null;
+                state.token = null;
+            })
             .addMatcher(
                 apiSlice.endpoints.deleteUsers.matchFulfilled,
                 (state, action) => {
                     if (
-                        action.meta.arg.originalArgs.find(
-                            (user) => user.id === state.user?.id
-                        )
+                        action.meta.arg.originalArgs.find((id) => id === state.user?._id)
                     ) {
                         state.user = null;
                         state.token = null;
@@ -44,7 +41,7 @@ const slice = createSlice({
                 }
             )
             .addMatcher(apiSlice.endpoints.blockUsers.matchFulfilled, (state, action) => {
-                if (action.payload.find((user) => user.id === state.user?.id)) {
+                if (action.payload.find((user) => user._id === state.user?._id)) {
                     state.user = null;
                     state.token = null;
                 }
@@ -53,7 +50,5 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
-
-export const { removeCredentials } = slice.actions;
 
 export const selectCurrentUser = (state: RootState) => state.auth.user;
