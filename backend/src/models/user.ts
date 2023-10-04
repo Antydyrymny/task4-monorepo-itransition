@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema<User>({
         type: String,
         immutable: true,
         required: true,
-        // default: () => new Date().toISOString(),
+        default: () => new Date().toISOString(),
     },
     lastLogin: {
         type: String,
