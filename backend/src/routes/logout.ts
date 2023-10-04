@@ -1,14 +1,12 @@
 import express from 'express';
 import passport from 'passport';
-import establishConnection from '../database/establishConnection';
+import { disconnect } from '../database/setupConnection';
 import { User } from '../models/user';
 
 const router = express.Router();
 router.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    const [connect, disconnect] = establishConnection();
     const _id: string = req.body;
     try {
-        await connect();
         const userToLogout = await User.findOne({ _id });
         if (!userToLogout) {
             res.status(404).json('User not found');

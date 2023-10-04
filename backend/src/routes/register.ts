@@ -1,7 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import establishConnection from '../database/establishConnection';
+import { connect, disconnect } from '../database/setupConnection';
 import { User } from '../models/user';
 import type { UserResponse } from './login';
 
@@ -15,7 +15,6 @@ type RegisterRequest = {
 
 const router = express.Router();
 router.post('/', async (req, res) => {
-    const [connect, disconnect] = establishConnection();
     const { name, email, password }: RegisterRequest = req.body;
     const newUser = new User({
         name,

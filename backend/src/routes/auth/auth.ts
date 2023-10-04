@@ -1,7 +1,7 @@
 import passport from 'passport';
 import passportJwt from 'passport-jwt';
 import dotenv from 'dotenv';
-import establishConnection from '../../database/establishConnection';
+import { connect, disconnect } from '../../database/setupConnection';
 import { User } from '../../models/user';
 
 dotenv.config();
@@ -16,7 +16,6 @@ passport.use(
             secretOrKey: process.env.JWT_SECRET,
         },
         async (jwtPayload, done) => {
-            const [connect, disconnect] = establishConnection();
             try {
                 await connect();
                 const userAuthenticated = await User.find({ _id: jwtPayload._id });

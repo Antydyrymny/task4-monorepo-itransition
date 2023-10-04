@@ -1,7 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import establishConnection from '../database/establishConnection';
+import { connect, disconnect } from '../database/setupConnection';
 import { User } from '../models/user';
 
 dotenv.config();
@@ -18,10 +18,10 @@ export type UserResponse = {
 
 const router = express.Router();
 router.post('/', async (req, res) => {
-    const [connect, disconnect] = establishConnection();
     const { email, password }: LoginRequest = req.body;
     try {
         await connect();
+
         const userWithEmail = await User.findOne({ email });
         if (!userWithEmail || userWithEmail.password !== password) {
             res.status(401).json('Email or password does not match');
@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
 
         userWithEmail.lastLogin = new Date().toISOString();
         userWithEmail.status = 'online';
-        userWithEmail.save();
+        await userWithEmail.save();
 
         const jwtToken = jwt.sign(
             {
@@ -38,6 +38,7 @@ router.post('/', async (req, res) => {
             },
             process.env.JWT_SECRET
         );
+
         const response: UserResponse = {
             user: userWithEmail,
             token: jwtToken,

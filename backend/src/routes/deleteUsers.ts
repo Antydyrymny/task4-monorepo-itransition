@@ -1,14 +1,12 @@
 import express from 'express';
 import passport from 'passport';
-import establishConnection from '../database/establishConnection';
+import { disconnect } from '../database/setupConnection';
 import { User } from '../models/user';
 
 const router = express.Router();
 router.delete('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    const [connect, disconnect] = establishConnection();
     const userIds: string[] = req.body;
     try {
-        await connect();
         await User.deleteMany({ _id: { $in: userIds } });
 
         res.status(200).json('Users deleted successfully');
