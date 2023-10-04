@@ -1,10 +1,7 @@
 import express from 'express';
 import passport from 'passport';
-import dotenv from 'dotenv';
 import establishConnection from '../database/establishConnection';
 import { User } from '../models/user';
-
-dotenv.config();
 
 const router = express.Router();
 router.patch('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
