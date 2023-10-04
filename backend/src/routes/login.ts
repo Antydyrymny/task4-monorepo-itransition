@@ -11,7 +11,7 @@ type LoginRequest = {
     password: string;
 };
 
-type UserResponse = {
+export type UserResponse = {
     user: User;
     token: string;
 };
@@ -27,6 +27,11 @@ router.post('/', async (req, res) => {
             res.status(401).json('Email or password does not match');
             return;
         }
+
+        userWithEmail.lastLogin = new Date().toISOString();
+        userWithEmail.status = 'online';
+        userWithEmail.save();
+
         const jwtToken = jwt.sign(
             {
                 id: userWithEmail._id,
@@ -44,3 +49,5 @@ router.post('/', async (req, res) => {
         disconnect();
     }
 });
+
+export default router;

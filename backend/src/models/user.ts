@@ -9,17 +9,6 @@ export type User = {
     status: 'online' | 'offline' | 'blocked';
 };
 
-export type UserResponse = {
-    user: User;
-    token: string;
-};
-
-export type RegisterRequest = {
-    name: string;
-    email: string;
-    password: string;
-};
-
 const userSchema = new mongoose.Schema<User>({
     name: {
         type: String,
