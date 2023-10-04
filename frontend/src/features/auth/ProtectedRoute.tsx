@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useAppSelector } from '../../app/hooks';
+import { useAppSelector } from '../../app/storeHooks';
 import { selectCurrentUser } from './authSlice';
 
 type ProtectedRouteProps = {

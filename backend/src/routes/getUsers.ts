@@ -1,9 +1,10 @@
 import express from 'express';
+import passport from 'passport';
 import establishConnection from '../database/establishConnection';
 import { User } from '../models/user';
 
 const router = express.Router();
-router.get('/', async (req, res) => {
+router.get('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const [connect, disconnect] = establishConnection();
     try {
         await connect();
