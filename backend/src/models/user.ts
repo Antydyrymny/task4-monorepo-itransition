@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 export type User = {
     name: string;
     email: string;
+    password: string;
     createdAt: string;
     lastLogin: string;
     status: 'online' | 'offline' | 'blocked';
@@ -11,11 +12,6 @@ export type User = {
 export type UserResponse = {
     user: User;
     token: string;
-};
-
-export type LoginRequest = {
-    email: string;
-    password: string;
 };
 
 export type RegisterRequest = {
@@ -33,6 +29,11 @@ const userSchema = new mongoose.Schema<User>({
         type: String,
         unique: true,
         required: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 1,
     },
     createdAt: {
         type: String,

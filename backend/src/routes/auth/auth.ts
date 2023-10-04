@@ -1,8 +1,8 @@
 import passport from 'passport';
 import passportJwt from 'passport-jwt';
 import dotenv from 'dotenv';
-import establishConnection from 'src/database/establishConnection';
-import { User } from 'src/models/user';
+import establishConnection from '../../database/establishConnection';
+import { User } from '../../models/user';
 
 dotenv.config();
 

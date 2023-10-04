@@ -1,6 +1,6 @@
 import express from 'express';
-import establishConnection from 'src/database/establishConnection';
-import { User } from 'src/models/user';
+import establishConnection from '../database/establishConnection';
+import { User } from '../models/user';
 
 const router = express.Router();
 router.get('/', async (req, res) => {
