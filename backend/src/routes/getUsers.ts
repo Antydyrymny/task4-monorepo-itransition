@@ -2,7 +2,7 @@ import express from 'express';
 // import passport from 'passport';
 // import { connect, disconnect } from '../database/setupConnection';
 // import { User } from '../models/user';
-import mongoose from 'mongoose';
+import mongoose, { ConnectOptions } from 'mongoose';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -12,7 +12,10 @@ const router = express.Router();
 // router.get('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
 router.get('/', async (req, res) => {
     try {
-        await mongoose.connect(connectionString);
+        await mongoose.connect(connectionString, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        } as ConnectOptions);
         mongoose.disconnect();
         // await connect();
         // const users = await User.find({});
