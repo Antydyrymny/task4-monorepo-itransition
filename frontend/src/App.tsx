@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
+import ProtectedRoute from './features/auth/ProtectedRoute';
 
 const LazyTable = React.lazy(() => import('./pages/table/Table'));
 const LazyLogin = React.lazy(() => import('./pages/login/Login'));
@@ -11,7 +12,7 @@ function App() {
     return (
         <Suspense fallback={<LoadingSpinner />}>
             <Routes>
-                <Route path='/' element={<LazyTable />} />
+                <Route path='/' element={<ProtectedRoute Component={LazyTable} />} />
                 <Route path='/login' element={<LazyLogin />} />
                 <Route path='/register' element={<LazyRegister />} />
             </Routes>
