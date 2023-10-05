@@ -4,7 +4,7 @@ import { disconnect } from '../database/setupConnection';
 import { UserModelType } from '../models/user';
 
 const router = express.Router();
-router.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.get('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const userToLogout = req.user as UserModelType;
         userToLogout.status = 'offline';
