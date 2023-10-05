@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
 
         const jwtToken = jwt.sign(
             {
-                id: userWithEmail._id,
+                _id: userWithEmail._id,
             },
             process.env.JWT_SECRET
         );

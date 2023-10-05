@@ -18,7 +18,8 @@ passport.use(
         async (jwtPayload, done) => {
             try {
                 await connect();
-                const userAuthenticated = await User.find({ _id: jwtPayload._id });
+                console.log(jwtPayload);
+                const userAuthenticated = await User.findOne({ _id: jwtPayload._id });
                 if (userAuthenticated) done(null, userAuthenticated);
             } catch (error) {
                 done(error);

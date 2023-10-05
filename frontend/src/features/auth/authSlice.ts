@@ -24,6 +24,11 @@ const authSlice = createSlice({
             state.user = action.payload.user;
             state.token = action.payload.token;
         },
+        clearAuth: (state) => {
+            state.user = null;
+            state.token = null;
+            window.localStorage.removeItem(authStorageKey);
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -38,11 +43,6 @@ const authSlice = createSlice({
                     localStorage.setItem(authStorageKey, JSON.stringify(action.payload));
                 }
             )
-            .addMatcher(apiSlice.endpoints.logOut.matchPending, (state) => {
-                state.user = null;
-                state.token = null;
-                window.localStorage.removeItem(authStorageKey);
-            })
             .addMatcher(
                 apiSlice.endpoints.deleteUsers.matchFulfilled,
                 (state, action) => {
@@ -67,6 +67,6 @@ const authSlice = createSlice({
 
 export default authSlice.reducer;
 
-export const { storeAuth } = authSlice.actions;
+export const { storeAuth, clearAuth } = authSlice.actions;
 
 export const selectCurrentUser = (state: RootState) => state.auth.user;
