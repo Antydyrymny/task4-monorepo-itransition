@@ -11,6 +11,10 @@
     cursor: pointer;
 }
 
+.fetching {
+    opacity: 0.5;
+}
+
 .pi {
     padding-inline: 1rem;
 }
@@ -43,4 +47,17 @@
 }
 .offline {
     background-color: red;
+}
+
+.sort {
+    white-space: nowrap;
+    img {
+        margin-left: 0.2rem;
+        cursor: pointer;
+    }
+}
+
+.sortUp {
+    @include transition(200);
+    transform: rotate(180deg);
 }

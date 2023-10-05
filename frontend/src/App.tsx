@@ -7,7 +7,7 @@ import usePreservedState from './hooks/usePreservedState';
 import { useAppDispatch } from './app/storeHooks';
 import { authStorageKey, storeAuth, Authenticated } from './features/auth/authSlice';
 
-const LazyUserTable = React.lazy(() => import('./pages/userTable/UserTable'));
+const LazyUserTable = React.lazy(() => import('./pages/userTable/TablePage'));
 const LazyLogin = React.lazy(() => import('./pages/login/Login'));
 const LazyRegister = React.lazy(() => import('./pages/register/Register'));
 
