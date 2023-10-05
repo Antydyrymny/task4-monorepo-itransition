@@ -1,5 +1,17 @@
 @use '../../styles/index.scss' as *;
 
+.white {
+    div:after {
+        background: white;
+    }
+}
+
+.black {
+    div:after {
+        background: black;
+    }
+}
+
 .ldsRoller {
     display: inline-block;
     position: absolute;
@@ -9,6 +21,13 @@
     width: 80px;
     height: 80px;
 }
+
+.centered {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .ldsRoller div {
     animation: ldsRoller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     transform-origin: 40px 40px;
@@ -20,7 +39,6 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: white;
     margin: -4px 0 0 -4px;
 }
 .ldsRoller div:nth-child(1) {

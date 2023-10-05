@@ -73,6 +73,7 @@ const apiSlice = createApi({
                 body: blockedUsers,
             }),
             invalidatesTags: ['Users'],
+            // ? Add pessimistic updates?
             // async onQueryStarted(_blockedUsers, { dispatch, queryFulfilled }) {
             //     try {
             //         const { data: updatedUsers } = await queryFulfilled;
@@ -95,6 +96,14 @@ const apiSlice = createApi({
             //     }
             // },
         }),
+        unblockUsers: builder.mutation<User[], string[]>({
+            query: (blockedUsers) => ({
+                url: '/unblockUsers',
+                method: 'PATCH',
+                body: blockedUsers,
+            }),
+            invalidatesTags: ['Users'],
+        }),
         deleteUsers: builder.mutation<string, string[]>({
             query: (blockedUsers) => ({
                 url: '/deleteUsers',
@@ -102,6 +111,7 @@ const apiSlice = createApi({
                 body: blockedUsers,
             }),
             invalidatesTags: ['Users'],
+            // ? Add pessimistic updates?
             // async onQueryStarted(deletedUsers, { dispatch, queryFulfilled }) {
             //     try {
             //         await queryFulfilled;
@@ -135,5 +145,6 @@ export const {
     useLogOutMutation,
     useGetUsersQuery,
     useBlockUsersMutation,
+    useUnblockUsersMutation,
     useDeleteUsersMutation,
 } = apiSlice;

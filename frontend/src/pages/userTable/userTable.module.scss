@@ -1,0 +1,46 @@
+@use '../../styles/index.scss' as *;
+
+.checkbox {
+    background-color: $white;
+    border-color: $primary;
+}
+
+.highlighted {
+    color: $white;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.pi {
+    padding-inline: 1rem;
+}
+
+.btn,
+.btnSmall {
+    @include flexbox;
+    border: 1px solid $black;
+    margin-left: 0.75rem;
+}
+
+.btn {
+    width: 5rem;
+}
+
+.btnSmall {
+    width: 2.5rem;
+}
+
+.online,
+.offline {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.online {
+    background-color: green;
+}
+.offline {
+    background-color: red;
+}

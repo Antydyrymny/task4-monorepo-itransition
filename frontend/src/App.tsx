@@ -7,7 +7,7 @@ import usePreservedState from './hooks/usePreservedState';
 import { useAppDispatch } from './app/storeHooks';
 import { authStorageKey, storeAuth, Authenticated } from './features/auth/authSlice';
 
-const LazyTable = React.lazy(() => import('./pages/table/Table'));
+const LazyUserTable = React.lazy(() => import('./pages/userTable/UserTable'));
 const LazyLogin = React.lazy(() => import('./pages/login/Login'));
 const LazyRegister = React.lazy(() => import('./pages/register/Register'));
 
@@ -20,7 +20,7 @@ function App() {
     return (
         <Suspense fallback={<LoadingSpinner />}>
             <Routes>
-                <Route path='/' element={<ProtectedRoute Component={LazyTable} />} />
+                <Route path='/' element={<ProtectedRoute Component={LazyUserTable} />} />
                 <Route path='/login' element={<LazyLogin />} />
                 <Route path='/register' element={<LazyRegister />} />
             </Routes>
