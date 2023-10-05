@@ -56,23 +56,26 @@ function TablePage() {
         !deleteUtils.isLoading;
 
     const handleBlockingUsers = useCallback(
-        (action: 'block' | 'unblock') => {
+        async (action: 'block' | 'unblock') => {
             const idsForRequest = selected.filter((userId) => {
                 const userToFilter = users.find((user) => user._id === userId);
                 return action === 'block'
                     ? userToFilter?.status !== 'blocked'
                     : userToFilter?.status === 'blocked';
             });
+            if (!idsForRequest.length) {
+                setSelected([]);
+                return;
+            }
+            if (action === 'block') await blockUsers(idsForRequest);
+            else await unblockUsers(idsForRequest);
             setSelected([]);
-            if (!idsForRequest.length) return;
-            if (action === 'block') blockUsers(idsForRequest);
-            else unblockUsers(idsForRequest);
         },
         [blockUsers, unblockUsers, selected, users]
     );
 
-    const handleDeleteUsers = useCallback(() => {
-        deleteUsers(selected);
+    const handleDeleteUsers = useCallback(async () => {
+        await deleteUsers(selected);
         setSelected([]);
     }, [deleteUsers, selected]);
 

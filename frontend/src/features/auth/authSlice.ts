@@ -64,15 +64,14 @@ const authSlice = createSlice({
                         window.localStorage.removeItem(authStorageKey);
                     }
                 }
-            );
-        // ? Matchers in case of using pessimistic updates
-        // .addMatcher(apiSlice.endpoints.blockUsers.matchFulfilled, (state, action) => {
-        //     if (action.payload.find((user) => user._id === state.user?._id)) {
-        //         state.user = null;
-        //         state.token = null;
-        //         window.localStorage.removeItem(authStorageKey);
-        //     }
-        // });
+            )
+            .addMatcher(apiSlice.endpoints.blockUsers.matchFulfilled, (state, action) => {
+                if (action.payload.find((user) => user._id === state.user?._id)) {
+                    state.user = null;
+                    state.token = null;
+                    window.localStorage.removeItem(authStorageKey);
+                }
+            });
     },
 });
 
