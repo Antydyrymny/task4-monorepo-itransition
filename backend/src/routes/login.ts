@@ -2,7 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { connect, disconnect } from '../database/setupConnection';
-import { User } from '../models/user';
+import { User, UserType } from '../models/user';
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ type LoginRequest = {
 };
 
 export type UserResponse = {
-    user: User;
+    user: UserType;
     token: string;
 };
 

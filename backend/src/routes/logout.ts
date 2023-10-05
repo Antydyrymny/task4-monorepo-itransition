@@ -1,20 +1,14 @@
 import express from 'express';
 import passport from 'passport';
 import { disconnect } from '../database/setupConnection';
-import { User } from '../models/user';
+import { UserModelType } from '../models/user';
 
 const router = express.Router();
 router.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    const _id: string = req.body;
     try {
-        const userToLogout = await User.findOne({ _id });
-        if (!userToLogout) {
-            res.status(404).json('User not found');
-            return;
-        }
-
+        const userToLogout = req.user as UserModelType;
         userToLogout.status = 'offline';
-        userToLogout.save();
+        await userToLogout.save();
 
         res.status(200).json('Loged out');
     } catch (error) {

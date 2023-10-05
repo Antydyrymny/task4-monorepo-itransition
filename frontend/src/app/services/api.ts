@@ -56,12 +56,8 @@ const apiSlice = createApi({
                 body: userData,
             }),
         }),
-        logOut: builder.mutation<string, string>({
-            query: (userId) => ({
-                url: '/logout',
-                method: 'POST',
-                body: userId,
-            }),
+        logOut: builder.mutation<string, void>({
+            query: () => '/logout',
         }),
         getUsers: builder.query<User[], void>({
             query: () => '/users',
