@@ -48,6 +48,7 @@ const apiSlice = createApi({
                 method: 'POST',
                 body: credentials,
             }),
+            invalidatesTags: ['Users'],
         }),
         register: builder.mutation<UserResponse, RegisterRequest>({
             query: (userData) => ({
@@ -55,12 +56,14 @@ const apiSlice = createApi({
                 method: 'POST',
                 body: userData,
             }),
+            invalidatesTags: ['Users'],
         }),
         logOut: builder.mutation<string, void>({
             query: () => ({
                 url: '/logout',
                 method: 'POST',
             }),
+            invalidatesTags: ['Users'],
         }),
         getUsers: builder.query<User[], void>({
             query: () => '/users',

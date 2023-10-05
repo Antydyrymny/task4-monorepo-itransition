@@ -47,25 +47,25 @@ const authSlice = createSlice({
                 const returnedCurrentUser = action.payload.find(
                     (user) => user._id === state.user?._id
                 );
-                if (!returnedCurrentUser || returnedCurrentUser?.status === 'blocked') {
+                if (!returnedCurrentUser || returnedCurrentUser.status === 'blocked') {
                     state.user = null;
                     state.token = null;
                     window.localStorage.removeItem(authStorageKey);
                 }
-            });
+            })
+            .addMatcher(
+                apiSlice.endpoints.deleteUsers.matchFulfilled,
+                (state, action) => {
+                    if (
+                        action.meta.arg.originalArgs.find((id) => id === state.user?._id)
+                    ) {
+                        state.user = null;
+                        state.token = null;
+                        window.localStorage.removeItem(authStorageKey);
+                    }
+                }
+            );
         // ? Matchers in case of using pessimistic updates
-        // .addMatcher(
-        //     apiSlice.endpoints.deleteUsers.matchFulfilled,
-        //     (state, action) => {
-        //         if (
-        //             action.meta.arg.originalArgs.find((id) => id === state.user?._id)
-        //         ) {
-        // state.user = null;
-        // state.token = null;
-        // window.localStorage.removeItem(authStorageKey);
-        //         }
-        //     }
-        // )
         // .addMatcher(apiSlice.endpoints.blockUsers.matchFulfilled, (state, action) => {
         //     if (action.payload.find((user) => user._id === state.user?._id)) {
         //         state.user = null;
