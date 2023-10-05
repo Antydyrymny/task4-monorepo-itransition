@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
 import ProtectedRoute from './features/auth/ProtectedRoute';
@@ -20,7 +20,11 @@ function App() {
     return (
         <Suspense fallback={<LoadingSpinner />}>
             <Routes>
-                <Route path='/' element={<ProtectedRoute Component={LazyUserTable} />} />
+                <Route path='/' element={<Navigate to={'/usersTable'} replace />} />
+                <Route
+                    path='/usersTable'
+                    element={<ProtectedRoute Component={LazyUserTable} />}
+                />
                 <Route path='/login' element={<LazyLogin />} />
                 <Route path='/register' element={<LazyRegister />} />
             </Routes>

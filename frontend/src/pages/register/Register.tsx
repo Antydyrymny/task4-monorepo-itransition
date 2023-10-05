@@ -8,7 +8,7 @@ import styles from './register.module.scss';
 import useFadingAlerError from '../../hooks/useFadingAlerError';
 
 export default function Register() {
-    useRedirectAuthenticated('/');
+    useRedirectAuthenticated('/usersTable');
     const [register, { isLoading, isError, error }] = useRegisterMutation();
     const [registerState, setRegisterState] = useState({
         name: '',

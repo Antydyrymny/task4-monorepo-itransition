@@ -9,7 +9,7 @@ import styles from './login.module.scss';
 import useFadingAlerError from '../../hooks/useFadingAlerError';
 
 export default function Login() {
-    useRedirectAuthenticated('/');
+    useRedirectAuthenticated('/usersTable');
     const [login, { isLoading, isError, error }] = useLoginMutation();
     const [loginState, setLoginState] = useState({ email: '', password: '' });
     const allowSubmit = !isLoading && loginState.email && loginState.password;
