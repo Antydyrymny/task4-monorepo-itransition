@@ -26,6 +26,9 @@ router.post('/', async (req, res) => {
         if (!userWithEmail || userWithEmail.password !== password) {
             res.status(401).json('Email or password does not match');
             return;
+        } else if (userWithEmail.status === 'blocked') {
+            res.status(403).json('You are blocked! Access forbidden');
+            return;
         }
 
         userWithEmail.lastLogin = new Date().toISOString();

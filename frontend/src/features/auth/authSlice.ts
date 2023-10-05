@@ -1,18 +1,30 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit';
 import type { RootState } from '../../app/store';
 import apiSlice, { User } from '../../app/services/api';
+
+export const authStorageKey = 'LOCAL_STORAGE_AUTH_KEY';
 
 type AuthState = {
     user: User | null;
     token: string | null;
 };
 
+export type Authenticated = {
+    user: User;
+    token: string;
+};
+
 const initialState: AuthState = { user: null, token: null };
 
-const slice = createSlice({
+const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        storeAuth: (state, action: PayloadAction<Authenticated>) => {
+            state.user = action.payload.user;
+            state.token = action.payload.token;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addMatcher(
@@ -23,11 +35,13 @@ const slice = createSlice({
                 (state, action) => {
                     state.user = action.payload.user;
                     state.token = action.payload.token;
+                    localStorage.setItem(authStorageKey, JSON.stringify(action.payload));
                 }
             )
             .addMatcher(apiSlice.endpoints.logOut.matchPending, (state) => {
                 state.user = null;
                 state.token = null;
+                window.localStorage.removeItem(authStorageKey);
             })
             .addMatcher(
                 apiSlice.endpoints.deleteUsers.matchFulfilled,
@@ -37,6 +51,7 @@ const slice = createSlice({
                     ) {
                         state.user = null;
                         state.token = null;
+                        window.localStorage.removeItem(authStorageKey);
                     }
                 }
             )
@@ -44,11 +59,14 @@ const slice = createSlice({
                 if (action.payload.find((user) => user._id === state.user?._id)) {
                     state.user = null;
                     state.token = null;
+                    window.localStorage.removeItem(authStorageKey);
                 }
             });
     },
 });
 
-export default slice.reducer;
+export default authSlice.reducer;
+
+export const { storeAuth } = authSlice.actions;
 
 export const selectCurrentUser = (state: RootState) => state.auth.user;
